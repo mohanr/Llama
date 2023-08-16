@@ -20,11 +20,9 @@ class InitialModel(tf.keras.Model):
 
     def call(self,idx,targets=None):
         x = self.token_embedding_table(idx)
-        a = self.net(x)
+        logits = self.net(x)
 
-        logits=self.token_embedding_table(idx)
         # print(f'Shape of logits {tf.shape(logits)} , targets {tf.shape(targets)}')
-        logits = tf.nn.softmax(a, axis=-1)
         if targets is None:
             loss = None
         else:
