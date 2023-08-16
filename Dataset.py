@@ -38,16 +38,14 @@ def reverse_map_fn(bytes):
     return bytes
 
 def map_fn(bytes):
-    print(f'Bytes {bytes}')
     samplelist.append(table.lookup(bytes))
     return bytes
 
 def random_sample(text,block_size):
     rand = tf.random.uniform(shape=(batch_size,), minval=1, maxval=length - (block_size + 1),dtype=tf.int32)
-    print(rand)
     return [tf.strings.substr(text,i, block_size, unit='BYTE') for i in rand]
 
-def draw_random_sample(block_size):
+def draw_random_sample_batches(block_size):
         sample = random_sample(input,block_size)
         tf.map_fn(map_fn,tf.strings.bytes_split(sample))
         global samplelist
@@ -62,8 +60,4 @@ def reverse_map(X):
 def decode(idx):
     return idx,indextoelem.lookup(
                     tf.strings.as_string([inp  for inp, inp in enumerate(idx)]))
-
-X,y = draw_random_sample(block_size=9)
-print(X)
-print(y)
 
