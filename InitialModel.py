@@ -1,7 +1,8 @@
 import tensorflow as tf
 from keras.layers import Embedding
-
-from Parameters import n_embd
+import tensorflow_probability as tfp
+from Parameters import n_embd,block_size
+from Dataset import vocab_size
 
 
 class InitialModel(tf.keras.Model):
@@ -29,3 +30,25 @@ class InitialModel(tf.keras.Model):
             bce = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
             loss = bce(targets,logits)
         return logits, loss
+
+    def generate(self,idx,max_new_tokens):
+        i = tf.constant(0)
+        c = lambda i, d: tf.less(i, max_new_tokens)
+
+        def b(i, idx):
+            # print(tf.shape(idx))
+            idx_cond = idx[-block_size:]
+            logits,loss = self(idx_cond)
+            logits = logits[-1:, :,:]
+            probs = tf.nn.softmax(logits)
+            idx_next = tfp.distributions.Multinomial(total_count=1,probs=probs)
+            sample = idx_next.sample(1)
+            idx = tf.concat([idx,
+                        tf.cast(tf.where(
+                            tf.squeeze(sample)),tf.int64)
+                      ],0)
+            return tf.add(i, 1), idx
+
+        _, idx = tf.while_loop(c, b, loop_vars=[i, idx])
+        # print(f'idx in generate is {idx}')
+        return idx
