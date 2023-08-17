@@ -4,14 +4,21 @@ import tensorflow as tf
 from Dataset import decode
 from Dataset import draw_random_sample_batches, vocab_size
 from InitialModel import InitialModel
-from Parameters import block_size, learning_rate
+from Parameters import block_size,batch_size,n_embd, learning_rate
+from RMSNorm import RMSNorm
 
 model = InitialModel(vocab_size)
 x, y = draw_random_sample_batches(block_size)
 logits, loss = model(x, y)
 idx, generation = decode(model.generate(tf.zeros((5,1),tf.int64),200))
-print(["".join(i) for i in generation.numpy()[:].astype(str)])
+array = ["".join(i) for i in generation.numpy()[:].astype(str)]
+s = ''.join(array)
+print(s)
 
+batch = tf.random.normal((batch_size,block_size,n_embd))
+rms = RMSNorm((block_size,n_embd))
+g = rms(batch)
+print(g.shape)
 
 optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
