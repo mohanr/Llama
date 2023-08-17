@@ -16,7 +16,7 @@ s = ''.join(array)
 print(s)
 
 batch = tf.random.normal((batch_size,block_size,n_embd))
-rms = RMSNorm((block_size,n_embd))
+rms = RMSNorm([block_size,n_embd])
 g = rms(batch)
 print(g.shape)
 

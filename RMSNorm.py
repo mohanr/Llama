@@ -4,9 +4,9 @@ import numpy as np
 
 class RMSNorm(tf.keras.Model):
 
-    def __init__(self, layer_shape, eps=1e-8, bias=False):
+    def __init__(self, layer_shape):
         super(RMSNorm, self).__init__()
-        self.scale = tf.Variable(initial_value=np.ones([block_size,n_embd]), trainable=True,dtype=tf.float32)
+        self.scale = tf.Variable(initial_value=np.ones(layer_shape), trainable=True,dtype=tf.float32)
 
     def call(self, x):
         normalized_mat, norm = tf.linalg.normalize(x, axis=(1, 2))
