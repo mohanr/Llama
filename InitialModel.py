@@ -2,7 +2,7 @@ import tensorflow as tf
 from keras.layers import Embedding
 import tensorflow_probability as tfp
 from Parameters import n_embd,block_size
-from Dataset import vocab_size
+from RMSNorm import RMSNorm
 
 
 class InitialModel(tf.keras.Model):
@@ -10,6 +10,7 @@ class InitialModel(tf.keras.Model):
     def __init__(self,vocab_size):
         super().__init__()
         self.token_embedding_table = Embedding(vocab_size,n_embd)
+        self.rms = RMSNorm([block_size, n_embd])
 
         self.net = tf.keras.Sequential(
             layers=[
@@ -21,6 +22,7 @@ class InitialModel(tf.keras.Model):
 
     def call(self,idx,targets=None):
         x = self.token_embedding_table(idx)
+        x = self.rms(x)
         logits = self.net(x)
 
         # print(f'Shape of logits {tf.shape(logits)} , targets {tf.shape(targets)}')

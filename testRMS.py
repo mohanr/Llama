@@ -1,5 +1,6 @@
 import tensorflow as tf
 from Parameters import batch_size,block_size,n_embd
+from RMSNorm import RMSNorm
 
 class TestRMSNorm(tf.test.TestCase):
 
@@ -27,5 +28,11 @@ class TestRMSNorm(tf.test.TestCase):
                                 tf.repeat([tf.constant(1024,tf.float32)], repeats=[4], axis=0),
                                 (4,1,1)),50,50)
 
+
+    def test_RMSNorm(self):
+            batch = tf.random.normal((batch_size, block_size, n_embd))
+            rms = RMSNorm([block_size, n_embd])
+            g = rms(batch)
+            print(g.shape)
 
 tf.test.main()

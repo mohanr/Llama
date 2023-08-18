@@ -1,6 +1,6 @@
-import tensorflow as tf
-from Parameters import batch_size,block_size,n_embd
 import numpy as np
+import tensorflow as tf
+
 
 class RMSNorm(tf.keras.Model):
 
@@ -11,11 +11,8 @@ class RMSNorm(tf.keras.Model):
     def call(self, x):
         normalized_mat, norm = tf.linalg.normalize(x, axis=(1, 2))
         # print(f'Normalize {norm}')
-        print(f'Size {tf.size(x[0])}')
-        ff_rms = tf.multiply(norm ,
+        rms = tf.multiply(norm ,
                              tf.pow(tf.cast(tf.size(x[0]),tf.float32),-0.5))
-        print(f'Shape of ff_rms {tf.shape(ff_rms)}')
-        raw = tf.divide(x , ff_rms )
-        print(f' Shape of raw {tf.shape(raw)} {self.scale[:tf.shape(x)[1], :]}')
-        return tf.multiply(self.scale[:tf.shape(x)[1], :] , raw)
+        r = tf.divide(x , rms )
+        return tf.multiply(self.scale[:tf.shape(x)[1], :] , r)
 

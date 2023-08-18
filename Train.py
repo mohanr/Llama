@@ -1,11 +1,11 @@
 import datetime
 
 import tensorflow as tf
+
 from Dataset import decode
 from Dataset import draw_random_sample_batches, vocab_size
 from InitialModel import InitialModel
-from Parameters import block_size,batch_size,n_embd, learning_rate
-from RMSNorm import RMSNorm
+from Parameters import block_size, learning_rate
 
 model = InitialModel(vocab_size)
 x, y = draw_random_sample_batches(block_size)
@@ -15,10 +15,7 @@ array = ["".join(i) for i in generation.numpy()[:].astype(str)]
 s = ''.join(array)
 print(s)
 
-batch = tf.random.normal((batch_size,block_size,n_embd))
-rms = RMSNorm([block_size,n_embd])
-g = rms(batch)
-print(g.shape)
+
 
 optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
@@ -28,7 +25,7 @@ epochs = 1
 for epoch in range(epochs):
     print("\nStart of epoch %d" % (epoch,))
 
-    for step in range(10):
+    for step in range(10000):
         with tf.GradientTape() as tape:
             x,y = draw_random_sample_batches(block_size)
             logits,loss = model(x,y)
