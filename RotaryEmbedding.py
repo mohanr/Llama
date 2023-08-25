@@ -14,8 +14,8 @@ def rotaryPositionalEmbeddingsTest():
         for j in range(K):
             ax[i, j].imshow(R[i * K + j, :, :])
             ax[i, j].set_title(f'rotation at {i * K + j}')
-    plt.show()
-
+    # plt.show()
+    plt.savefig("rotraryembeddings.png")
 
 if __name__ == "__main__":
     rotaryPositionalEmbeddingsTest()

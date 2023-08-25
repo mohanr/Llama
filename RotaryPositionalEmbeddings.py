@@ -1,5 +1,5 @@
 import tensorflow as tf
-import numpy as np
+
 
 class RotaryPositionalEmbeddings(tf.keras.Model):
 
@@ -19,7 +19,6 @@ class RotaryPositionalEmbeddings(tf.keras.Model):
                 theta = tf.pow(10000. , tf.divide(tf.multiply(neg_2 , tf.subtract(i , 1)) , embedding_dim))
                 m_theta = tf.multiply(tf.cast(p_i,tf.float32) , tf.cast(theta,tf.float32))
                 R[p_i, tf.multiply(2, i),tf.multiply(2, i)].assign(tf.cos(m_theta))
-                # print(i, p_i, tf.multiply(2, i), tf.multiply(2, tf.add(i , 1)))
                 R[p_i, tf.multiply(2, i), tf.multiply(2, tf.add(i , 1))].assign(- tf.sin(m_theta))
                 R[p_i, tf.multiply(2, tf.add(i , 1)), tf.multiply(2, i)].assign(tf.sin(m_theta))
                 R[p_i, tf.multiply(2, tf.add(i , 1)), tf.multiply(2, tf.add(i , 1))].assign(tf.cos(m_theta))
