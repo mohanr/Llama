@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 import tensorflow as tf
-from Parameters import n_embd
+from Parameters import n_embd, batch_size, block_size
+from RoPEAttention import RoPEAttention
 from RotaryPositionalEmbeddings import RotaryPositionalEmbeddings
 
 
@@ -17,5 +18,17 @@ def rotaryPositionalEmbeddingsTest():
     # plt.show()
     plt.savefig("rotraryembeddings.png")
 
+def ropeAttentionTest():
+    layer = RoPEAttention()
+    batch = tf.random.uniform((batch_size, block_size, n_embd))
+    output, attn_weights = layer(batch, return_attn_weights=True)
+    print(tf.shape(attn_weights))
+    plt.imshow(attn_weights[0][0], interpolation='nearest')
+    plt.colorbar()
+    data = tf.random.normal(( 12 , 12 ))
+    # plt.imshow( data )
+    plt.show()
+
 if __name__ == "__main__":
-    rotaryPositionalEmbeddingsTest()
+    # rotaryPositionalEmbeddingsTest()
+    ropeAttentionTest()
