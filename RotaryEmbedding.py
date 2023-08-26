@@ -22,7 +22,10 @@ def ropeAttentionTest():
     layer = RoPEAttention()
     batch = tf.random.uniform((batch_size, block_size, n_embd))
     output, attn_weights = layer(batch, return_attn_weights=True)
-    print(tf.shape(attn_weights))
+    print(f'Shape of attention weights is {tf.shape(attn_weights)}')
+    weight_names = ['query', 'keys', 'values', 'proj']
+    for name, out in zip(weight_names, layer.get_weights()):
+        print(name, out.shape)
     plt.imshow(attn_weights[0][0], interpolation='nearest')
     plt.colorbar()
     data = tf.random.normal(( 12 , 12 ))
