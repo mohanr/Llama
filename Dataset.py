@@ -46,7 +46,7 @@ def random_sample(text,block_size):
     return [tf.strings.substr(text,i, block_size, unit='BYTE') for i in rand]
 
 def draw_random_sample_batches(block_size):
-        sample = random_sample(input,block_size)
+        sample = random_sample(input,block_size + 1)
         tf.map_fn(map_fn,tf.strings.bytes_split(sample))
         global samplelist
         X = tf.stack([inp[  : -1] for inp in samplelist])

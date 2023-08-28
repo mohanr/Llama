@@ -13,7 +13,6 @@ class RotaryPositionalEmbeddings(tf.keras.Model):
         neg_2 = tf.constant(-2)
         emb = lambda i, d: tf.less(i, int(tf.divide(embedding_dim , 2) - 1))
         p = lambda p_i, d: tf.less(p_i, block_size )
-        print(int(tf.divide(embedding_dim , 2)))
         def position(p_i, p_idx):
             def embedding(i, idx):
                 theta = tf.pow(10000. , tf.divide(tf.multiply(neg_2 , tf.subtract(i , 1)) , embedding_dim))

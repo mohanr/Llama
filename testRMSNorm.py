@@ -1,6 +1,7 @@
 import tensorflow as tf
-from Parameters import batch_size,block_size,n_embd
-from RMSNorm import RMSNorm
+
+from Parameters import batch_size, block_size, n_embd
+
 
 class testRMSNorm(tf.test.TestCase):
 
